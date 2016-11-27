@@ -1,0 +1,26 @@
+# Try to find GStreamermm
+# Released under MIT License by Kota Weaver
+# Once done this will define
+#  GSTREAMERMM_FOUND - System has GStreamermm
+#  GSTREAMERMM_INCLUDE_DIRS - The GStreamermm include directories
+#  GSTREAMERMM_LIBRARIES - The libraries needed to use GStreamermm
+#  GSTREAMERMM_DEFINITIONS - Compiler switches required for using GStreamermm
+
+find_package(PkgConfig)
+find_package(Glibmm)
+find_package(GStreamer)
+find_package(Giomm)
+pkg_check_modules(PC_GSTREAMERMM QUIET gstreamermm-1.0)
+set(GSTREAMERMM_DEFINITIONS ${PC_GSTREAMERMM_CFLAGS_OTHER})
+find_path(GSTREAMERMM_INCLUDE_DIR gstreamermm.h
+  HINTS ${PC_GSTREAMERMM_INCLUDEDIR} ${PC_GSTREAMERMM_INCLUDE_DIRS})
+find_path(GSTREAMERMMCONFIG_INCLUDE_DIR gstreamermmconfig.h
+  HINTS ${PC_GSTREAMERMM_INCLUDEDIR} ${PC_GSTREAMERMM_INCLUDE_DIRS})
+find_library(GSTREAMERMM_LIBRARY NAMES gstreamermm-1.0
+  HINTS ${PC_GSTREAMERMM_LIBDIR} ${PC_GSTREAMERMM_LIBRARY_DIRS})
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(GSTREAMERMM DEFAULT_MSG
+  GSTREAMERMM_LIBRARY GSTREAMERMM_INCLUDE_DIR)
+mark_as_advanced(GSTREAMERMM_INCLUDE_DIR GSTREAMERMM_LIBRARY)
+set(GSTREAMERMM_LIBRARIES ${GSTREAMERMM_LIBRARY} ${GLIBMM_LIBRARIES} ${GSTREAMER_LIBRARIES} ${GIOMM_LIBRARIES})
+set(GSTREAMERMM_INCLUDE_DIRS ${GSTREAMERMM_INCLUDE_DIR} ${GLIBMM_INCLUDE_DIRS} ${GSTREAMER_INCLUDE_DIRS} ${GSTREAMERMMCONFIG_INCLUDE_DIR} ${GIOMM_INCLUDE_DIRS})
